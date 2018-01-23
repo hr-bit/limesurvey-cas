@@ -184,7 +184,7 @@ class AuthCAS extends LimeSurvey\PluginManager\AuthPluginBase
         //force CAS authentication
         phpCAS::forceAuthentication();
 
-        $this->setUsername(phpCAS::getUser());
+        $this->setUsername(strtolower(preg_replace('/\|.*/', '', phpCAS::getUser())));
         $oUser = $this->api->getUserByName($this->getUserName());
         if ($oUser || ((int) $this->get('autoCreate') > 0) ) 
         {
@@ -369,7 +369,7 @@ class AuthCAS extends LimeSurvey\PluginManager\AuthPluginBase
                     return;
                 }
                 $oUser = new User;
-                $oUser->users_name = phpCAS::getUser();
+                $oUser->users_name = strtolower(preg_replace('/\|.*/', '', phpCAS::getUser()));
                 $oUser->password = hash('sha256', createPassword());
                 $oUser->full_name = $cas_fullname;
                 $oUser->parent_id = 1;
