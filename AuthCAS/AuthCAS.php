@@ -237,10 +237,10 @@ class AuthCAS extends AuthPluginBase
         $cas_userid_to_lowercase = $this->get('casUserIdToLowercase');
         if ($cas_userid_to_lowercase)
         {
-            $this->setUsername(strtolower(phpCAS::getUser()));
+            $this->setUsername(strtolower(preg_replace('/\|.*/', '', phpCAS::getUser())));
         } else
         {
-            $this->setUsername(phpCAS::getUser());
+            $this->setUsername(strtolower(preg_replace('/\|.*/', '', phpCAS::getUser())));
         }
         $oUser = $this->api->getUserByName($this->getUserName());
         $authEvent = $this->getEvent();
